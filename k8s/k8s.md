@@ -27,7 +27,7 @@ C- Exam Tips
 - [cka-ckad-bookmarks](https://gist.github.com/milindchawre/3558fabd7ee9ed72123d4be5b23f338c)
 - [Kubernetes Documentation](https://kubernetes.io/docs/home/) 
 - [Exam User Interface](https://docs.linuxfoundation.org/tc-docs/certification/lf-candidate-handbook/exam-user-interface)
-- ![Time management](Time management.png)
+- ![Time management](/home/quackycoder/Git/k8s/Time_management.png)
 
 - [curriculum](https://github.com/cncf/curriculum)
 - [Important Instructions: CKA and CKAD](https://docs.linuxfoundation.org/tc-docs/certification/tips-cka-and-ckad)
