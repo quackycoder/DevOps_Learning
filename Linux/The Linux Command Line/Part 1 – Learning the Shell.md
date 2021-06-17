@@ -131,9 +131,9 @@ To change our working directory (where we are standing in our tree-shaped maze) 
 
 **`cd` Shortcuts**
 
-|     |     |
-| --- | --- |
+
 | **Shortcut** | **Result** |
+| --- | --- |
 | cd  | Changes the working directory to your home directory. |
 | cd - | Changes the working directory to the previous working directory. |
 | cd ~user_name | Changes the working directory to the home directory of user_name. For example, cd ~bob will change the directory to the home directory of user “bob.” |
