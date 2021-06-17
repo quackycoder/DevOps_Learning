@@ -131,9 +131,9 @@ To change our working directory (where we are standing in our tree-shaped maze) 
 
 **`cd` Shortcuts**
 
-|     |     |
-| --- | --- |
+
 | **Shortcut** | **Result** |
+| --- | --- |
 | cd  | Changes the working directory to your home directory. |
 | cd - | Changes the working directory to the previous working directory. |
 | cd ~user_name | Changes the working directory to the home directory of user_name. For example, cd ~bob will change the directory to the home directory of user “bob.” |
@@ -216,8 +216,8 @@ So most commands look kinda like this:
 
 **Common `ls` Options**
 
-| --- | --- | --- | --- | --- | --- |
 | **Option** | **Long Option** | **Description** |
+| --- | --- | --- |
 | **-a** | **--all** | List all files, even those with names that begin with a period, which are normally not listed(that is, hidden). |
 | **-A** | **--almost-all** | Like the -a option above except it does not list . (current directory) and .. (parent directory). |
 | **-d** | **--directory** | Ordinarily, if a directory is specified, ls will list the contents of the directory, not the directory itself. Use this option in conjunction with the -l option to see details about the directory rather than its contents. |
@@ -238,8 +238,9 @@ So most commands look kinda like this:
 -rw-r--r-- 1 root root 44355   Apr 23 11:05 oo-derivatives.doc
 ```
 **`ls` Long Listing Fields**
-| --- | --- | --- | --- | --- | --- |
+
 | **Field** | **Meaning** |
+| --- | --- |
 | **-rw-r--r--** | Access rights to the file. The first character indicates the type of file. Among the different types, a leading dash means a regular file, while a “d” indicates a directory. The next three characters are the access rights for the file's owner, the next three are for members of the file's group, and the final three are for everyone else.|
 | 1 | File's number of hard links. See the sections "Symbolic Links" and "Hard Links" later in this chapter. |
 | root | The username of the file's owner. |
@@ -294,8 +295,9 @@ The less command is used like this:
 - If we **accidentally attempt to view a non-text file** and it scrambles the terminal window, we can recover by entering the `reset` command.
 ### Linux Directories
 **Directories Found on Linux Systems**
-| --- | --- | --- | --- | --- | --- |
+
 | **Directory** | **Comments** |
+| --- | --- |
 | **/** | The root directory. Where everything begins. |
 | **/bin** | Contains binaries (programs) that must be present for the system to boot and run. |
 | **/boot** | Contains the Linux kernel, initial RAM disk image (for drivers needed at boot time), and the boot loader. <br> Interesting files:<br> ● /boot/grub/grub.conf or menu.lst, which are used to configure the boot loader.<br>● /boot/vmlinuz (or something similar), the Linux kernel|
@@ -356,8 +358,9 @@ With this simple command, you can achieve it:
 - These special characters are called ***wildcards(which is also known as globbing)***
 
 **Wildcards notations**:
-| --- | --- | --- | --- | --- | --- |
+
 | **Wildcard** | **Meaning** |
+| --- | --- |
 | **\*** | Matches any characters |
 | **?** | Matches any single character |
 | **[characters]** | Matches any character that is a member of the set characters |
@@ -366,8 +369,9 @@ With this simple command, you can achieve it:
 
 
 **Commonly Used Character Classes**
-| --- | --- | --- | --- | --- | --- |
+
 | **Character Class** | **Meaning** |
+| --- | --- |
 | **[:alnum:]** | Matches any alphanumeric character |
 | **[:alpha:]** | Matches any alphabetic character |
 | **[:digit:]** | Matches any numeral |
@@ -378,8 +382,9 @@ With this simple command, you can achieve it:
 - Wildcards can be used with **any command that accepts filenames** as **arguments**.
 
 **Wildcard Examples**
-| --- | --- | --- | --- | --- | --- |
+
 | **Pattern** | **Matches** |
+| --- | --- |
 | **\*** | All files |
 | **g\*** | Any file beginning with “g” |
 | **b\*.txt** | Any file beginning with “b” followed by any characters and ending with “.txt” |
@@ -477,8 +482,9 @@ SYNOPSIS
 ....................
 ```
 - The “manual” that man displays is broken into sections and covers not only user commands but also system administration commands, programming interfaces, file formats and more.
-| --- | --- | --- | --- | --- | --- |
+
 | **Section** | **Contents** |
+| --- | --- |
 | **1** | User commands |
 | **2** | Programming interfaces for kernel system calls |
 | **3** | Programming interfaces to the C library |
