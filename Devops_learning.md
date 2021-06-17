@@ -2,6 +2,8 @@
 
 I want to document my Devops journey as I learn more about Devops and different tools and technologies associated with devops ecosystem. 
 
+![This is a learning roadmap of DevOps](./DevOps)
+
 
 ## The tools and technology I want to learn are as follow:
 
