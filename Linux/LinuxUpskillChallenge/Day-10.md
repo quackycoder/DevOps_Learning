@@ -45,6 +45,6 @@ Use the links in the RESOURCES section to read up about how these timers work.
 
 ## RESOURCES
 
-- A good overview of systemd/Timers(https://wiki.archlinux.org/index.php/Systemd/Timers)
+- [A good overview of systemd/Timers](https://wiki.archlinux.org/index.php/Systemd/Timers)
 
-- "How to Use Systemd Timers as a Cron Replacement"(https://www.maketecheasier.com/use-systemd-timers-as-cron-replacement/)
+- ["How to Use Systemd Timers as a Cron Replacement"](https://www.maketecheasier.com/use-systemd-timers-as-cron-replacement/)
