@@ -29,10 +29,10 @@ __Comparison__
 
 Provider | Instant Activation? | Must be a student? | VPS ram | VPS cpu count |	Time | Credits
 | --- | --- | --- | --- | --- | --- | --- |
-Azure	Yes	Yes	1gb/ 512mb*2	1/2	1 year, renewed up to 4 years	$100
-IBM Cloud	Yes	No	2gb	1	30 days	$200
-AWS educate	No	Yes (Github student pack)	???	???	???	$100
-Digital Ocean	No	Yes (Github student pack)	???	???	???	$50
+Azure Yes Yes 1gb/ 512mb*2 1/2	1 year, renewed up to 4 years	$100
+IBM Cloud Yes No 2gb 1 30 days $200
+AWS educate No Yes (Github student pack) ??? ??? ??? $100
+Digital Ocean No Yes (Github student pack) ??? ??? ??? $50
 
 ## Cards that work as, or like, credit cards
 
