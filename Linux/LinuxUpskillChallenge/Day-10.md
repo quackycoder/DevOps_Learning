@@ -1,4 +1,4 @@
-# [Creating Your Own Server - without a credit card](https://www.reddit.com/r/linuxupskillchallenge/comments/nmfo4o/day_0_creating_your_own_server_without_a_credit/)
+# [Getting the computer to do your work for you](https://www.reddit.com/r/linuxupskillchallenge/comments/o25j5n/day_10_getting_the_computer_to_do_your_work_for/)
 
 ## INTRO
 
