@@ -131,9 +131,9 @@ To change our working directory (where we are standing in our tree-shaped maze) 
 
 **`cd` Shortcuts**
 
-
-| **Shortcut** | **Result** |
+|     |     |
 | --- | --- |
+| **Shortcut** | **Result** |
 | cd  | Changes the working directory to your home directory. |
 | cd - | Changes the working directory to the previous working directory. |
 | cd ~user_name | Changes the working directory to the home directory of user_name. For example, cd ~bob will change the directory to the home directory of user “bob.” |
@@ -216,8 +216,8 @@ So most commands look kinda like this:
 
 **Common `ls` Options**
 
+| --- | --- | --- | --- | --- | --- |
 | **Option** | **Long Option** | **Description** |
-| --- | --- | --- |
 | **-a** | **--all** | List all files, even those with names that begin with a period, which are normally not listed(that is, hidden). |
 | **-A** | **--almost-all** | Like the -a option above except it does not list . (current directory) and .. (parent directory). |
 | **-d** | **--directory** | Ordinarily, if a directory is specified, ls will list the contents of the directory, not the directory itself. Use this option in conjunction with the -l option to see details about the directory rather than its contents. |
@@ -238,9 +238,8 @@ So most commands look kinda like this:
 -rw-r--r-- 1 root root 44355   Apr 23 11:05 oo-derivatives.doc
 ```
 **`ls` Long Listing Fields**
-
+| --- | --- | --- | --- | --- | --- |
 | **Field** | **Meaning** |
-| --- | --- |
 | **-rw-r--r--** | Access rights to the file. The first character indicates the type of file. Among the different types, a leading dash means a regular file, while a “d” indicates a directory. The next three characters are the access rights for the file's owner, the next three are for members of the file's group, and the final three are for everyone else.|
 | 1 | File's number of hard links. See the sections "Symbolic Links" and "Hard Links" later in this chapter. |
 | root | The username of the file's owner. |
@@ -295,9 +294,8 @@ The less command is used like this:
 - If we **accidentally attempt to view a non-text file** and it scrambles the terminal window, we can recover by entering the `reset` command.
 ### Linux Directories
 **Directories Found on Linux Systems**
-
+| --- | --- | --- | --- | --- | --- |
 | **Directory** | **Comments** |
-| --- | --- |
 | **/** | The root directory. Where everything begins. |
 | **/bin** | Contains binaries (programs) that must be present for the system to boot and run. |
 | **/boot** | Contains the Linux kernel, initial RAM disk image (for drivers needed at boot time), and the boot loader. <br> Interesting files:<br> ● /boot/grub/grub.conf or menu.lst, which are used to configure the boot loader.<br>● /boot/vmlinuz (or something similar), the Linux kernel|
@@ -358,9 +356,8 @@ With this simple command, you can achieve it:
 - These special characters are called ***wildcards(which is also known as globbing)***
 
 **Wildcards notations**:
-
+| --- | --- | --- | --- | --- | --- |
 | **Wildcard** | **Meaning** |
-| --- | --- |
 | **\*** | Matches any characters |
 | **?** | Matches any single character |
 | **[characters]** | Matches any character that is a member of the set characters |
@@ -369,9 +366,8 @@ With this simple command, you can achieve it:
 
 
 **Commonly Used Character Classes**
-
+| --- | --- | --- | --- | --- | --- |
 | **Character Class** | **Meaning** |
-| --- | --- |
 | **[:alnum:]** | Matches any alphanumeric character |
 | **[:alpha:]** | Matches any alphabetic character |
 | **[:digit:]** | Matches any numeral |
@@ -382,9 +378,8 @@ With this simple command, you can achieve it:
 - Wildcards can be used with **any command that accepts filenames** as **arguments**.
 
 **Wildcard Examples**
-
+| --- | --- | --- | --- | --- | --- |
 | **Pattern** | **Matches** |
-| --- | --- |
 | **\*** | All files |
 | **g\*** | Any file beginning with “g” |
 | **b\*.txt** | Any file beginning with “b” followed by any characters and ending with “.txt” |
@@ -482,9 +477,8 @@ SYNOPSIS
 ....................
 ```
 - The “manual” that man displays is broken into sections and covers not only user commands but also system administration commands, programming interfaces, file formats and more.
-
+| --- | --- | --- | --- | --- | --- |
 | **Section** | **Contents** |
-| --- | --- |
 | **1** | User commands |
 | **2** | Programming interfaces for kernel system calls |
 | **3** | Programming interfaces to the C library |
@@ -1113,3 +1107,110 @@ Or
 Time's up
 ```
 ## Advanced Keyboard Tricks
+</br>
+
+### Command Line Editing
+- **bash** uses a library (a shared collection of routines that different programs can use) called **Readline** to implement command line editing.
+#### Cursor Movement
+|__Key__ | __Action__|
+| --- | --- |
+|__Ctrl-a__ | Move cursor to the beginning of the line.
+|__Ctrl-e__ | Move cursor to the end of the line.
+|__Ctrl-f__ | Move cursor forward one character; same as the right arrow key.
+|__Ctrl-b__ | Move cursor backward one character; same as the left arrow key.
+|__Alt-f__ | Move cursor forward one word.
+|__Alt-b__ | Move cursor backward one word.
+|__Ctrl-l__ | Clear the screen and move the cursor to the top-left corner. The
+clear command does the same thing.
+
+#### Modifying Text
+|__Key__ | __Action__|
+| --- | --- |
+|__Ctrl-d__ | Delete the character at the cursor location.
+|__Ctrl-t__ | Transpose (exchange) the character at the cursor location with the one preceding it.
+|__Alt-t__ | Transpose the word at the cursor location with the one preceding it.
+|__Alt-l__ | Convert the characters from the cursor location to the end of the word to lowercase.
+|__Alt-u__ | Convert the characters from the cursor location to the end of the word to uppercase.
+#### Cutting and Pasting (Killing and Yanking) Text
+- The Readline documentation uses the terms **killing** and **yanking** to refer to what we would commonly call **cutting** and **pasting**.
+|__Key__ | __Action__|
+| --- | --- |
+|__Ctrl-k__ | Kill text from the cursor location to the end of line.
+|__Ctrl-u__ | Kill text from the cursor location to the beginning of the line.
+|__Alt-d__ | Kill text from the cursor location to the end of the current word.
+|__Alt-Backspace__ | Kill text from the cursor location to the beginning of the current word. If the cursor is at the beginning of a word, kill the previous word.
+|__Ctrl-y__ | Yank text from the kill-ring and insert it at the cursor location.
+### Completion
+- **Completion** occurs when we press the tab key while typing a command.
+- Completion will also work on:
+  -  **variables** (if the beginning of the word is a `$`)
+  -  **user names** (if the word begins with `~`)
+  -  **commands** (if the word is the first word on the line)
+  -  **hostnames** (if the beginning of the word is `@`)
+-  **Hostname** completion works only for host- names listed in `/etc/hosts`.
+|__Key__ | __Action__|
+| --- | --- |
+|__Alt-?__ | Display a list of possible completions. On most systems you can also do this by pressing the Tab key a second time, which is much easier.
+|__Alt-*__ | KInsert all possible completions. This is useful when you want to use more than one possible match.
+__Programmable Completion__
+- Recent versions of **bash** have a facility called **programmable completion**.
+- Programmable completion allows you to add additional completion rules.
+- Programmable completion is implemented by shell functions, a kind of mini shell script
+- Try the following:
+`set | less`
+and see if you can find them.
+
+### Using History
+- bash maintains a history of commands that have been entered and is kept in our home directory in a file called ***.bash_history***.
+- **By default**, bash stores the last **500 commands** we have entered, though most **modern distributions** set this value to **1000**.
+- To execute a history command, we can simply do something like this:
+```
+┌─┤🦆quackycoder@G580🦆~├─╼
+└╼ history | grep docker
+469  service docker stop
+471  docker ps
+472  service docker start
+503  history | grep docker
+509  docker ps
+510  history | grep docker
+┌─┤🦆quackycoder@G580🦆~├─╼
+└╼ !509
+```
+- The above command will expand the command that is numbered 509 and execute it. 
+- **bash** also provides the **ability to search the history list incrementally**.
+- This means we can tell bash to search the history list as we enter characters, with each additional character further refining our search.
+- To **start incremental search** press `Ctrl-r` followed by the text we are looking for.
+- When we find it, we can *either press* **Enter** *to execute the command* OR press `Ctrl-j` to **copy** the line from the history list to the current command line.
+- To **quit searching**, press either `Ctrl-g` or `Ctrl-c`.
+__History Command__
+| __Key__ | __Action__ |
+| --- | --- |
+|__Ctrl-p__| Move to the previous history entry. This is the same action as the up arrow.
+|__Ctrl-n__| Move to the next history entry. This is the same action as the down arrow.
+|__Alt-<__| Move to the beginning (top) of the history list.
+|__Alt->__| Move to the end (bottom) of the history list, i.e., the current command line.
+|__Ctrl-r__| Reverse incremental search. This searches incrementally from the current command line up the history list.
+|__Alt-p__| Reverse search, non-incremental. With this key, type in the search string and press enter before the search is performed.
+|__Alt-n__| Forward search, non-incremental.
+|__Ctrl-o__| Execute the current item in the history list and advance to the next one. This is handy if we are trying to re-execute a sequence of commands in the history list.
+
+__History Expansion__
+
+- The shell offers a specialized type of **expansion** for items in the history list by using the `!` character.
+| __Sequence__ | __Action__ |
+| --- | --- |
+|__!!__| Repeat the last command. It is probably easier to press up arrow and enter.
+|__!number__| Repeat history list item number.
+|__!string__| Repeat last history list item starting with string.
+|__!?string__| Repeat last history list item containing string.
+__Warning__
+
+- Use the `!string` and `!?string` forms *unless you are absolutely sure* of the contents of the history list items.
+
+__Note:__
+- Most Linux distributions include a program called **script** that can be used to record an entire shell session and store it in a file.
+- The basic syntax of the command is as follows:
+`script [file]`
+  - where ***file*** is the name of the file used for storing the recording.
+  - If *no file is specified*, the file **typescript** is used.
+## Permissions
