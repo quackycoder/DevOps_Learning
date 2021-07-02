@@ -5,7 +5,7 @@
 
 The following diagram shows the architecture of the solution. We use AWS CloudFormation to describe the pipeline as code.
 
-[!Pipeline architecture](/k8s/containers-pipeline-architecture-blog-v2-1.png)
+![Pipeline architecture](./containers-pipeline-architecture-blog-v2-1.png)
 
 ## The main steps are as follows:
 
