@@ -510,8 +510,9 @@ sysadmin@localhost:~$ls -d /etc/x*
 ```
 
 - Like the `cp` command, the `mv` command provides the following options:
-| --- | --- |
+
 | __Option__ | __Meaning__ |
+| --- | --- |
 | __-i__ |  Interactive: Ask if a file is to be overwritten. |
 | __-n__ |  No Clobber: Do not overwrite a destination file's contents. |
 | __-v__ |  Verbose: Show the resulting move. |
@@ -738,8 +739,9 @@ sysadmin@localhost:~/Documents$ sort -t, -k2 -k1n -k3 os.csv
 1970,Unix,Thompson
 ```
 - The following table breaks down the options used in the previous example:
-| --- | --- |
+
 | Option | Function |
+| --- | --- |
 | __-t,__ | Specifies the comma character as the field delimiter |
 | __-k2__ | Sort by field #2 |
 | __-k1n__ | Numerically sort by field #1 |
