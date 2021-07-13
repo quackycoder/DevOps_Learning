@@ -415,4 +415,415 @@ ls: cannot access /etc/junk: No such file or directory
 failed
 ```
 
+# Ch-7/Navigating the Filesystem
+
+- __Colored output__ is __not the default behavior__ for the `ls` command, but rather the effect of the `--color` option.
+- The `ls` seems to perform this coloring automatically because there is an __alias__ for the `ls` command, so it runs with the `--color` option.
+-To avoid using the __alias__, place a __backslash character \__ in front of your command:
+```
+sysadmin@localhost:~$ ls
+Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos 
+sysadmin@localhost:~$ \ls
+Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+```
+- To display all files, including __hidden files__, use the `-a` option to the `ls` command:
+```
+sysadmin@localhost:~$ ls -a                                            
+.             .bashrc   .selected_editor  Downloads  Public           
+..            .cache    Desktop           Music      Templates         
+.bash_logout  .profile  Documents         Pictures   Videos
+```
+- Why are files hidden in the first place? Most of the hidden files are customization files, designed to customize how Linux, your shell or programs work. 
+- For example, the .bashrc file in the home directory customizes features of the shell, such as creating or modifying variables and aliases.
+
+- To __sort files by size__, we can use the `-S` option.
+```
+sysadmin@localhost:~$ ls -S /etc/ssh
+moduli            ssh_host_ed25519_key  ssh_host_ecdsa_key.pub
+sshd_config       ssh_host_rsa_key.pub  ssh_host_ed25519_key.pub
+```
+- While the `-S` option works by itself, it is most useful when used with the `-l` option so the file sizes are visible.
+```
+sysadmin@localhost:~$ ls -lS /etc/ssh
+total 580
+-rw-r--r-- 1 root root 553122 Feb 10  2018 moduli
+-rw-r--r-- 1 root root   3264 Feb 10  2018 sshd_config
+-rw------- 1 root root   1679 Jul 19 06:52 ssh_host_rsa_key
+-rw-r--r-- 1 root root   1580 Feb 10  2018 ssh_config
+```
+- It may also be useful to use the `-h` option to display __human-readable file sizes__:
+```
+sysadmin@localhost:~$ ls -lSh /etc/ssh                                
+total 580K                                                                      
+-rw-r--r-- 1 root root 541K Feb 10  2018 moduli
+-rw-r--r-- 1 root root 3.2K Feb 10  2018 sshd_config
+-rw------- 1 root root 1.7K Jul 19 06:52 ssh_host_rsa_key
+-rw-r--r-- 1 root root 1.6K Feb 10  2018 ssh_config
+```
+- The `-t` option __sorts files based on the time they were modified__.
+```
+sysadmin@localhost:~$ ls -tl /etc/ssh                                 
+total 580
+-rw------- 1 root root    227 Jul 19 06:52 ssh_host_ecdsa_key
+-rw-r--r-- 1 root root    179 Jul 19 06:52 ssh_host_ecdsa_key.pub
+-rw------- 1 root root    411 Jul 19 06:52 ssh_host_ed25519_key
+```
+- If the files in a directory were modified many days or months ago, it may be harder to tell exactly when they were modified, as only the date is provided for older files.
+- For more detailed modification time information you can use the `--full-time` option to display the __complete timestamp (including hours, minutes, seconds)__.
+```
+sysadmin@localhost:~$ ls -t --full-time /etc/ssh
+total 580
+-rw------- 1 root root    227 2018-07-19 06:52:16.000000000 +0000 ssh_host_ecdsa_key
+-rw-r--r-- 1 root root    179 2018-07-19 06:52:16.000000000 +0000 ssh_host_ecdsa_key.pub
+-rw------- 1 root root    411 2018-07-19 06:52:16.000000000 +0000 ssh
+```
+- It is possible to perform a __reverse sort__ by using the `-r` option. 
+```
+sysadmin@localhost:~$ ls -lrS /etc/ssh
+total 580
+-rw-r--r-- 1 root root     99 Jul 19 06:52 ssh_host_ed25519_key.pub
+-rw-r--r-- 1 root root    179 Jul 19 06:52 ssh_host_ecdsa_key.pub
+-rw------- 1 root root    227 Jul 19 06:52 ssh_host_ecdsa_key
+```
+- The following command will list files by __modification date, oldest to newest__:
+```
+sysadmin@localhost:~$ ls -lrt /etc/ssh                                 
+total 580
+-rw-r--r-- 1 root root   3264 Feb 10  2018 sshd_config
+-rw-r--r-- 1 root root   1580 Feb 10  2018 ssh_config
+-rw-r--r-- 1 root root 553122 Feb 10  2018 moduli
+```
+# Ch-8/Managing Files and Directories
+
+- When the `ls` command sees a filename as an argument, it just displays the __filename__. However, __for any directory__, it displays the __contents of the directory__, not just the directory name.
+- This becomes even more confusing in a situation like the following:
+```
+sysadmin@localhost:~$ ls /etc/x*                                                
+autostart  systemd  user-dirs.conf  user-dirs.defaults 
+```
+- In the previous example, it seems like the `ls` command is just plain wrong. However, what really happened is that __the only thing that matches the glob__ `/etc/x*` is the `/etc/xdg` directory. 
+- So, the `ls` command only displayed the files in that directory!
+- There is a simple solution to this problem: __always use__ the `-d` option __with globs__, which tells the `ls` command to display the name of directories, instead of their contents:
+```
+sysadmin@localhost:~$ls -d /etc/x*                                             
+/etc/xdg
+```
+
+- Like the `cp` command, the `mv` command provides the following options:
+| --- | --- |
+| __Option__ | __Meaning__ |
+| __-i__ |  Interactive: Ask if a file is to be overwritten. |
+| __-n__ |  No Clobber: Do not overwrite a destination file's contents. |
+| __-v__ |  Verbose: Show the resulting move. |
+
+- __Important__: There is __no__ `-r` option as the `mv` command moves directories by default.
+
+- Enter the following commands to __copy from the source directory and preserve file attributes(date and permission modes)__ by using the `-p` option:
+```
+sysadmin@localhost:~$ rm hosts 
+sysadmin@localhost:~$ ls                                                 
+Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos     
+sysadmin@localhost:~$ cd /etc                                                 
+sysadmin@localhost:/etc$ ls -l hosts                                          
+-rw-r--r-- 1 root root 150 Jan 22 15:18 hosts                                 
+sysadmin@localhost:/etc$ cp -p hosts /home/sysadmin                           
+sysadmin@localhost:/etc$ cd                                                   
+sysadmin@localhost:~$ ls -l hosts                                             
+-rw-r--r-- 1 sysadmin sysadmin 150 Jan 22 15:18 hosts                         
+sysadmin@localhost:~$
+```
+- Type the following commands to copy using a different target name:
+```
+rm  hosts				
+cp -p /etc/hosts ~			
+cp hosts newname			
+ls –l hosts newname
+rm hosts newname
+```
+- The first copy with the `-p` option __preserved the original timestamp__. Recall that the __tilde ~__ represents your __home directory (/home/sysadmin)__.
+- The second copy specified a different filename (newname) as the target. Because it was issued without the `-p` option, the system used the current date and time for the target; thus, it did not preserve the original timestamp found in the source file `/etc/hosts`.
+- Finally, note that you can remove more than one file at a time as shown in the last rm command.
+
+- To __copy all files in a directory__, use the `-R` option. 
+```
+mkdir Myetc
+cp –R /etc/udev Myetc
+ls –l Myetc
+ls –lR Myetc
+```
+# Ch-9/Archiving and Compression
+
+- Linux provides several tools to __compress files__; the most common is __gzip__. Here we show a file before and after compression:
+```
+sysadmin@localhost:~$ cd Documents
+sysadmin@localhost:~/Documents$ ls -l longfile*
+-rw-r--r-- 1 sysadmin sysadmin 66540 Dec 20  2017 longfile.txt
+sysadmin@localhost:~/Documents$ gzip longfile.txt
+sysadmin@localhost:~/Documents$ ls -l longfile*
+-rw-r--r-- 1 sysadmin sysadmin 341 Dec 20  2017 longfile.txt.gz
+```
+- The __`gzip`__ command will provide this information, by using the `–l` option, as shown here:
+```
+sysadmin@localhost:~/Documents$ gzip -l longfile.txt.gz
+         compressed        uncompressed  ratio uncompressed_name
+                341               66540  99.5% longfile.txt
+```
+- __Compressed files can be restored__ to their original form using either the `gunzip` command or the `gzip –d` command. This process is called __decompression__.
+```
+sysadmin@localhost:~/Documents$ gunzip longfile.txt.gz
+sysadmin@localhost:~/Documents$ ls -l longfile*
+-rw-r--r-- 1 sysadmin sysadmin 66540 Dec 20  2017 longfile.txt
+```
+- The `gunzip` command is __just a script__ that calls `gzip` with the right parameters.
+
+- There is __`bzip2`__ and __`bunzip2`__, as well as __`xz`__ and __`unxz`__.
+
+- The `gzip` command uses the __Lempel-Ziv data compression algorithm__, while the `bzip` utilities use a different compression algorithm called __Burrows-Wheeler block sorting__, which can __compress files smaller than gzip at the expense of more CPU time__. These files can be recognized because they have a __.bz__ or __.bz2__ extension instead of a __.gz__ extension.
+
+- The `xz` and `unxz` tools are functionally similar to `gzip` and `gunzip` in that they use the __Lempel-Ziv-Markov (LZMA) chain algorithm__, which can result in __lower decompression CPU times__ that are on par with gzip while providing the __better compression ratios__ typically associated with the `bzip2` tools. Files compressed with the `xz` command use the `.xz` extension.
+
+- If you had several files to send to someone, you could choose to compress each one individually. You would have a smaller amount of data in total than if you sent uncompressed files, however, you would still have to deal with many files at one time.
+- __Archiving__ is the solution to this problem. The traditional UNIX utility to archive files is called __tar__, which is a short form of __TApe aRchive__.
+- It was used to stream many files to a tape for backups or file transfer. 
+- The `tar` command takes in __several files__ and creates a __single output file__ that can be split up again into the original files on the other end of the transmission.
+- The tar command has three modes that are helpful to become familiar with:
+
+  - __Create__: Make a new archive out of a series of files.  - __Extract__: Pull one or more files out of an archive.
+  - __List__: Show the contents of the archive without extracting.
+
+`tar -c [-f ARCHIVE] [OPTIONS] [FILE...]`
+- `-c`-- Create an archive.
+ 
+- `-f ARCHIVE` Use archive file.The argument ARCHIVE will be the name of the resulting archive file.
+ 
+- The following example shows a tar file, also called a __tarball__, being created from multiple files.
+```
+sysadmin@localhost:~/Documents$ tar -cf alpha_files.tar alpha*
+sysadmin@localhost:~/Documents$ ls -l alpha_files.tar
+-rw-rw-r-- 1 sysadmin sysadmin 10240 Oct 31 17:07 alpha_files.tar
+```
+- Normally, __tarball files__ are __slightly larger than the combined input files__ due to the overhead information on recreating the original files. 
+- Tarballs can be compressed for easier transport, either by using `gzip` on the archive or by having tar do it with the `-z` option.
+```
+sysadmin@localhost:~/Documents$ tar -czf alpha_files.tar.gz alpha*
+sysadmin@localhost:~/Documents$ ls -l alpha_files.tar.gz
+-rw-rw-r-- 1 sysadmin sysadmin 417 Oct 31 17:15 alpha_files.tar.gz
+```
+- The `bzip2` compression can be used instead of `gzip` by substituting the `-j` option for the `-z` option and using `.tar.bz2`, `.tbz`, or `.tbz2` as the file extension. 
+` sysadmin@localhost:~/Documents$ tar -cjf folders.tbz School`
+
+- Given a __tar archive__, compressed or not, you can see what’s in it by using the `-t` option. The next example uses three options:
+`tar -t [-f ARCHIVE] [OPTIONS]`
+- `-t`-- List the files in an archive.
+- `-j`-- Decompress with an bzip2 command.
+- `-f ARCHIVE`-- Operate on the given archive. 
+```
+sysadmin@localhost:~/Documents$ tar -tjf folders.tbz
+School/
+School/Engineering/
+School/Engineering/hello.sh
+School/Art/
+```
+- We will __list the contents of the file__ in two steps using a __pipeline, the |__ character.
+```
+sysadmin@localhost:~/Documents$ bunzip2 -c folders.tbz | tar -t
+School/
+School/Engineering/
+School/Engineering/hello.sh
+School/Art/
+```
+- `bunzip2 –c folders.tbz`, which __decompresses the file__, but the `-c` option __sends the output to the screen__.
+
+- Extracting tarball or tar compressed file.
+`tar -x [-f ARCHIVE] [OPTIONS]`
+
+- `-x`--  Extract files from an archive.
+- `-j`-- Decompress with the bzip2 command.
+- `-f ARCHIVE`-- Operate on the given archive.
+- `-v`-- Verbosely list the files processed.
+```
+sysadmin@localhost:~/Downloads$ tar -xjf folders.tbz
+sysadmin@localhost:~/Downloads$ ls -l
+total 8
+drwx------ 5 sysadmin sysadmin 4096 Dec 20  2017 School
+-rw-rw-r-- 1 sysadmin sysadmin  413 Oct 31 18:37 folders.tbz
+```
+- It is important to keep the `–f` flag __at the end__, as __tar__ assumes whatever follows this option is a __file name__. In the next example, the `–f` and `–v` flags were transposed, leading to tar interpreting the command as an operation on a file called `v`, which __does not exist__.
+```
+sysadmin@localhost:~/Downloads$ tar -xjfv folders.tbz 
+tar (child): v: Cannot open: No such file or directory
+tar (child): Error is not recoverable: exiting now
+tar: Child returned status 2
+tar: Error is not recoverable: exiting now
+```
+- If you only want some files out of the archive, add their names to the end of the command, but by default, they must match the name in the archive exactly, or use a pattern. 
+```
+sysadmin@localhost:~/Downloads$ tar -xjvf folders.tbz School/Art/linux.txt
+School/Art/linux.txt
+```
+- If you want __tar like behavior__ in `zip` command, you must use the `–r` option to indicate recursion is to be used:
+```
+sysadmin@localhost:~/Documents$ zip -r School.zip School
+updating: School/ (stored 0%)
+updating: School/Engineering/ (stored 0%)
+```
+- The `–l` list option of the `unzip` command lists files in `.zip` archives:
+
+# Ch-10/Working With Text
+
+- The `-n` option can also be used to indicate __how many lines to output__.
+```
+sysadmin@localhost:~$ head -n 3 /etc/sysctl.conf
+#
+# /etc/sysctl.conf - Configuration file for setting system variables
+# See /etc/sysctl.d/ for additional system variables
+```
+
+- Traditionally in UNIX, the number of lines to output would be specified as an option with either command, so `-3` meant to show __three lines__. For the `tail` command, either `-3` or `-n -3` still means show __three lines__.
+
+- However, the GNU version of the `head` command recognizes `-n -3` as show all but the last three lines, and yet the `head` command still recognizes the option `-3` as show the __first three lines__.
+
+- If the `-n` option is used with a number __prefixed by the plus sign__, then the `tail` command recognizes this to mean to display the contents starting at the __specified line__ and continuing __all the way to the end__.
+```
+sysadmin@localhost:~$ nl /etc/passwd | tail -n +25
+    25  sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
+    26  operator:x:1000:37::/root:/bin/sh
+    27  sysadmin:x:1001:1001:System Administrator,,,,:/home/sysadmin:/bin/bash
+```
+## IMPORTANT
+
+- __Live file__ changes can be viewed by using the `-f` option to the `tail` command—useful when you want to see changes to a file as they are happening.
+
+- A good example of this would be when __viewing log files__ as a system administrator. Log files can be used to troubleshoot problems and administrators often view them "interactively" with the `tail` command while performing commands in a separate window. 
+- For example, if you were to log in as the root user, you could troubleshoot issues with the email server by viewing live changes to the /var/log/mail.log log file. 
+
+- The `sort` command can rearrange the output based on the contents of one or more fields. Fields are determined by a field delimiter contained on each line.
+
+- The following command can be used to sort the third field of the mypasswd file numerically. Three options are used to achieve this sort:
+```
+sysadmin@localhost:~$ sort -t: -n -k3 mypasswd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+```
+- __`-t:`__ -- The -t option specifies the field delimiter. If the file or input is separated by a delimiter other than whitespace, for example a comma or colon, the -t option will allow for another field separator to be specified as an argument.
+
+The mypasswd file used in the previous example uses a colon : character as a delimiter to separate the fields, so the following example uses the -t: option.
+
+- __`-k3`__ -- The -k option specifies the field number. To specify which field to sort by, use the -k option with an argument to indicate the field number, starting with 1 for the first field.
+
+The following example uses the -k3 option to sort by the third field.
+
+- __`-n`__ -- This option specifies the sort type.
+
+The third field in the mypasswd file contains numbers, so the -n option is used to perform a numeric sort.
+
+- Another commonly used option to the `sort` command is the `-r` option, which is used to perform a __reverse sort__.
+```
+sysadmin@localhost:~$ sort -t: -n -r -k3 mypasswd
+sync:x:4:65534:sync:/bin:/bin/sync 
+sys:x:3:3:sys:/dev:/usr/sbin/nologin  
+bin:x:2:2:bin:/bin:/usr/sbin/nologin  
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+root:x:0:0:root:/root:/bin/bash    
+```
+- To sort first by the operating system (field #2) and then year (field #1) and then by last name (field #3), use the following command:
+```
+sysadmin@localhost:~/Documents$ sort -t, -k2 -k1n -k3 os.csv
+1991,Linux,Torvalds
+1987,Minix,Tanenbaum
+1970,Unix,Richie
+1970,Unix,Thompson
+```
+- The following table breaks down the options used in the previous example:
+| --- | --- |
+| Option | Function |
+| __-t,__ | Specifies the comma character as the field delimiter |
+| __-k2__ | Sort by field #2 |
+| __-k1n__ | Numerically sort by field #1 |
+| __-k3__ | Sort by field #3 |
+
+
+- The `cut` command can __extract columns of text from a file__ or __standard input__. It’s primarily used for working with __delimited database files__.
+
+- __By default__, the `cut` command expects its input to be __separated by the tab__ character, but the `-d` option can specify alternative delimiters such as the __colon__ or __comma__.
+
+- The `-f` option can specify __which fields to display__, either as a __hyphenated range__ or a __comma-separated list__.
+
+- In the following example, the first, fifth, sixth and seventh fields from the mypasswd database file are displayed:
+```
+sysadmin@localhost:~$ cut -d: -f1,5-7 mypasswd
+root:root:/root:/bin/bash
+daemon:daemon:/usr/sbin:/usr/sbin/nologin
+bin:bin:/bin:/usr/sbin/nologin
+sys:sys:/dev:/usr/sbin/nologin
+sync:sync:/bin:/bin/sync
+```
+- The `cut` command is also able to __extract columns of text__ based upon character position with the `-c` option—useful when working with fixed-width database files or command outputs.
+
+- For example, the fields of the ls -l command are always in the same character positions. The following will display just the file type (character 1), permissions (characters 2-10), a space (character 11), and filename (characters 50+):
+```
+sysadmin@localhost:~$ ls -l | cut -c1-11,50-
+total 44
+drwxr-xr-x Desktop
+drwxr-xr-x Documents
+drwxr-xr-x Downloads
+drwxr-xr-x Music
+drwxr-xr-x Pictures
+```
+
+- The `-c` option provides a count of how many lines match:
+```
+sysadmin@localhost:~$ grep -c bash /etc/passwd
+2
+```
+- The `-n` option to the `grep` command will display __original line numbers__. To display all lines and their line numbers in the `/etc/passwd` file which contain the pattern bash:
+```
+sysadmin@localhost:~$ grep -n bash /etc/passwd                          
+1:root:x:0:0:root:/root:/bin/bash                                       
+27:sysadmin:x:1001:1001:System Administrator,,,,:/home/sysadmin:/bin/bash
+```
+- The `-v` option __inverts the match__, outputting __all lines that do not contain the pattern__. To display all lines not containing nologin in the `/etc/passwd` file:
+```
+sysadmin@localhost:~$ grep -v nologin /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+sync:x:4:65534:sync:/bin:/bin/sync
+operator:x:1000:37::/root:/bin/sh
+sysadmin:x:1001:1001:System Administrator,,,,:/home/sysadmin:/bin/bash
+```
+- The `-i` option __ignores the case__ (capitalization) distinctions.
+```
+sysadmin@localhost:~/Documents$ grep -i the newhome.txt
+There are three bathrooms.
+**Beware** of the ghost in the bedroom.
+The kitchen is open for entertaining.
+**Caution** the spirits don't like guests.
+```
+- The `-w` option only __returns lines__ which contain __matches that form whole words__.
+```
+sysadmin@localhost:~/Documents$ grep are newhome.txt
+There are three bathrooms.
+**Beware** of the ghost in the bedroom.
+sysadmin@localhost:~/Documents$ grep -w are newhome.txt
+There are three bathrooms.
+```
+- Use the `-E` switch to allow `grep` to operate in __extended mode__ in order to recognize the alternation operator:
+```
+sysadmin@localhost:/etc$ grep -E 'sshd|root|operator' passwd                  
+root:x:0:0:root:/root:/bin/bash                                               
+sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin                             
+operator:x:1000:37::/root:/bin/sh 
+```
+- Suppose you want to search for a pattern containing a __sequence of three digits__. You can use __{ }__ characters with a number to express that you want to repeat a pattern a specific number of times; for example: {3}. The use of the numeric qualifier requires the extended mode of `grep`:
+```
+sysadmin@localhost:/etc$ grep -E '[0-9]{3}' passwd                              
+sync:x:4:65534:sync:/bin:/bin/sync                                              
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin                      
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin                                
+systemd-network:x:101:102:systemd Network Management,,,:/run/systemd/netif:/usr/
+sbin/nologin              
+```
+
 
